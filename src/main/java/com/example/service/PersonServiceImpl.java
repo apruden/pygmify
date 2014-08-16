@@ -17,7 +17,7 @@ public class PersonServiceImpl implements PersonService {
 
     @PersistenceContext
     EntityManager em;
-        
+
     @Transactional
     public void addPerson(Person person) {
         em.persist(person);
@@ -37,5 +37,4 @@ public class PersonServiceImpl implements PersonService {
             em.remove(person);
         }
     }
-    
 }
