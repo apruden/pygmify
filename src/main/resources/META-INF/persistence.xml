@@ -1,10 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <persistence xmlns="http://java.sun.com/xml/ns/persistence"
-             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-             xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
-             version="2.0">
-
-    <persistence-unit name="dataSource" transaction-type="RESOURCE_LOCAL">
-    </persistence-unit>
-
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
+	version="2.0">
+	<!-- <persistence-unit name="dataSource" transaction-type="RESOURCE_LOCAL">
+	</persistence-unit> -->
+	<persistence-unit name="HOGM_PU" transaction-type="RESOURCE_LOCAL">
+		<provider>org.hibernate.ogm.jpa.HibernateOgmPersistence</provider>
+		<class>com.monolito.pygmify.model.Document</class>
+		<class>com.monolito.pygmify.model.HistoryEntry</class>
+		<class>com.monolito.pygmify.model.User</class>
+		<properties>
+			<property name="hibernate.ogm.datastore.provider" value="mongodb" />
+			<property name="hibernate.ogm.datastore.grid_dialect" value="org.hibernate.ogm.datastore.mongodb.MongoDBDialect"/>
+			<property name="hibernate.ogm.datastore.database" value="PygmifyDB" />
+		</properties>
+	</persistence-unit>
 </persistence>

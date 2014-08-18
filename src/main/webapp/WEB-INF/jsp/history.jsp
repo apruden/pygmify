@@ -28,12 +28,10 @@
 				<div class="page-header">
 					<h1>History</h1>
 				</div>
-				<form:form method="get" action="search" commandName="main"
-					class="form-vertical">
-					<form:label path="query">Search</form:label>
-					<form:input path="query" />
+				<form method="get" action="/web/history" class="form-vertical">
+					<label for="query">Search</label> <input id="query" name="query" />
 					<input type="submit" value="Search" class="btn" />
-				</form:form>
+				</form>
 				<c:if test="${!empty entries}">
 					<h3>Entries</h3>
 					<table class="table table-bordered table-striped">

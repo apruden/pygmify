@@ -1,59 +1,106 @@
 package com.monolito.pygmify.model;
 
-import java.time.LocalDateTime;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
+import org.hibernate.annotations.GenericGenerator;
+
+/**
+ * 
+ * @author alex
+ *
+ */
 @Entity
 public class Document {
 
+	/**
+	 * 
+	 */
 	@Id
-	@GeneratedValue
-	private Integer id;
+	@GeneratedValue(generator = "uuid")
+	@GenericGenerator(name = "uuid", strategy = "uuid2")
+	private String id;
 
+	/**
+	 * 
+	 */
 	private String url;
 
+	/**
+	 * 
+	 */
 	private String content;
 
-	private LocalDateTime lastUpdated;
+	/**
+	 * 
+	 */
+	public Document() {
+	}
 
+	/**
+	 * 
+	 * @param url
+	 * @param content
+	 */
 	public Document(String url, String content) {
 		this.url = url;
 		this.content = content;
-		this.lastUpdated = LocalDateTime.now();
 	}
 
-	public Integer getId() {
+	/**
+	 * 
+	 * @return
+	 */
+	public String getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	/**
+	 * 
+	 * @param id
+	 */
+	public void setId(String id) {
 		this.id = id;
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
 	public String getUrl() {
 		return url;
 	}
 
+	/**
+	 * 
+	 * @param url
+	 */
 	public void setUrl(String url) {
 		this.url = url;
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
 	public String getContent() {
 		return content;
 	}
 
+	/**
+	 * 
+	 * @param content
+	 */
 	public void setContent(String content) {
 		this.content = content;
 	}
 
-	public LocalDateTime getLastUpdated() {
-		return lastUpdated;
-	}
-
-	public void setLastUpdated(LocalDateTime lastUpdated) {
-		this.lastUpdated = lastUpdated;
+	/**
+	 * 
+	 */
+	@Override
+	public String toString() {
+		return "<Document " + this.id + " at " + this.url + ">";
 	}
 }

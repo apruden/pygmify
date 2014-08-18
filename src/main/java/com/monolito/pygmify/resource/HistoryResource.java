@@ -1,5 +1,6 @@
 package com.monolito.pygmify.resource;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.ws.rs.DELETE;
@@ -21,7 +22,7 @@ public class HistoryResource {
 	
 	@GET
 	public List<HistoryEntry> getList(String query) {
-		return null;
+		return new ArrayList<>();
 	}
 	
 	@DELETE
