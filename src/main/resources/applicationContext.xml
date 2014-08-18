@@ -20,20 +20,34 @@
 	</bean>
 	<tx:annotation-driven />
 	<beans profile="default">
-		<!-- <jdbc:embedded-database id="dataSource" /> -->
+		<jdbc:embedded-database id="dataSource" />
+		<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+			<property name="entityManagerFactory" ref="entityManagerFactory" />
+			<property name="dataSource" ref="dataSource" />
+		</bean>
+		<bean id="entityManagerFactory"
+			class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+			<property name="dataSource" ref="dataSource" />
+			<property name="jpaVendorAdapter">
+				<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter" />
+			</property>
+			<property name="jpaProperties">
+				<props>
+					<prop key="hibernate.dialect">org.hibernate.dialect.HSQLDialect</prop>
+					<prop key="hibernate.hbm2ddl.auto">create</prop>
+				</props>
+			</property>
+		</bean>
+	</beans>
+	<!-- <beans profile="default">
 		<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
 			<property name="entityManagerFactory" ref="entityManagerFactory" />
 		</bean>
 		<bean id="entityManagerFactory"
 			class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
 			<property name="persistenceUnitName" value="HOGM_PU" />
-			<!-- <property name="dataSource" ref="dataSource" /> <property name="jpaVendorAdapter"> 
-				<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter" 
-				/> </property> -->
-			<!-- <property name="jpaProperties"> <props> <prop key="hibernate.dialect">org.hibernate.dialect.HSQLDialect</prop> 
-				<prop key="hibernate.hbm2ddl.auto">create</prop> </props> </property> -->
 		</bean>
-	</beans>
+	</beans> -->
 	<beans profile="prod">
 		<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
 			<property name="entityManagerFactory" ref="entityManagerFactory" />

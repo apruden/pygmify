@@ -67,7 +67,8 @@ public class ScrapperServiceImpl implements ScrapperService {
 
 		log.debug("about to save");
 		final String pageAsText = page.asText();
-		Document doc = new Document(url, pageAsText);
+		Document doc = new Document(url, pageAsText.substring(0, Math.min(70000, pageAsText.length())));
+
 		/*
 		 * User u = new User(); HistoryEntry e = new HistoryEntry();
 		 * e.setDocument(doc); e.setUser(u);

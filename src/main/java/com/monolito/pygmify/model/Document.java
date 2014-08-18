@@ -1,5 +1,6 @@
 package com.monolito.pygmify.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -25,11 +26,13 @@ public class Document {
 	/**
 	 * 
 	 */
+	@Column(length=1000)
 	private String url;
 
 	/**
 	 * 
 	 */
+	@Column(length=100000)
 	private String content;
 
 	/**
