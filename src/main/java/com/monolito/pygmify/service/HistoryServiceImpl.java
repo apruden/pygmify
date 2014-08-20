@@ -22,11 +22,17 @@ public class HistoryServiceImpl implements HistoryService {
 	@PersistenceContext
 	EntityManager em;
 
+	/**
+	 * 
+	 */
 	@Override
 	@Transactional
 	public void deleteEntry(HistoryEntry entry) {
 	}
 
+	/**
+	 * 
+	 */
 	@Override
 	public List<HistoryEntry> listEntries() {
 		CriteriaQuery<HistoryEntry> c = em.getCriteriaBuilder().createQuery(

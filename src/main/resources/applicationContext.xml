@@ -2,23 +2,42 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jdbc="http://www.springframework.org/schema/jdbc"
 	xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
-	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:task="http://www.springframework.org/schema/task"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
                            http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd
                            http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
                            http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+                           http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd
                            http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
 	<context:annotation-config />
-	<context:component-scan base-package="com.monolito" />
-	<mvc:annotation-driven />
-	<bean id="jspViewResolver"
-		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-		<property name="viewClass"
-			value="org.springframework.web.servlet.view.JstlView" />
-		<property name="prefix" value="/WEB-INF/jsp/" />
-		<property name="suffix" value=".jsp" />
+	<!-- <context:component-scan base-package="com.monolito"/> -->
+	<context:component-scan base-package="com.monolito.pygmify">
+		<context:exclude-filter type="regex"
+			expression="com\.monolito\.pygmify\.controller.*" />
+	</context:component-scan>
+	<!-- <mvc:annotation-driven /> -->
+	<task:annotation-driven executor="executorWithPoolSizeRange" />
+	<task:executor id="executorWithPoolSizeRange" pool-size="2" />
+	<bean id="taskExecutor"
+		class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+		<property name="corePoolSize" value="5" />
+		<property name="maxPoolSize" value="10" />
+		<property name="queueCapacity" value="25" />
 	</bean>
 	<tx:annotation-driven />
+
+	<bean id="simpleBeanTarget" class="com.monolito.pygmify.service.HttpClient" scope="prototype">
+	</bean>
+
+	<bean id="poolTargetSource" class="org.springframework.aop.target.CommonsPoolTargetSource">
+		<property name="targetBeanName" value="simpleBeanTarget" />
+		<property name="maxSize" value="20" />
+	</bean>
+
+	<bean id="simpleBean" class="org.springframework.aop.framework.ProxyFactoryBean">
+		<property name="targetSource" ref="poolTargetSource" />
+	</bean>
+
 	<beans profile="default">
 		<jdbc:embedded-database id="dataSource" />
 		<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
@@ -35,19 +54,15 @@
 				<props>
 					<prop key="hibernate.dialect">org.hibernate.dialect.HSQLDialect</prop>
 					<prop key="hibernate.hbm2ddl.auto">create</prop>
+					<prop key="hibernate.show_sql">true</prop>
 				</props>
 			</property>
 		</bean>
 	</beans>
-	<!-- <beans profile="default">
-		<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
-			<property name="entityManagerFactory" ref="entityManagerFactory" />
-		</bean>
-		<bean id="entityManagerFactory"
-			class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
-			<property name="persistenceUnitName" value="HOGM_PU" />
-		</bean>
-	</beans> -->
+	<!-- <beans profile="default"> <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager"> 
+		<property name="entityManagerFactory" ref="entityManagerFactory" /> </bean> 
+		<bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean"> 
+		<property name="persistenceUnitName" value="HOGM_PU" /> </bean> </beans> -->
 	<beans profile="prod">
 		<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
 			<property name="entityManagerFactory" ref="entityManagerFactory" />

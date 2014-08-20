@@ -22,6 +22,9 @@ public class User {
 	@GenericGenerator(name = "uuid", strategy = "uuid2")
 	private String id;
 	
+	/**
+	 * 
+	 */
 	@OneToMany
 	private List<HistoryEntry> historyEntries;
 
